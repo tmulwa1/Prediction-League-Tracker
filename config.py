@@ -10,3 +10,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance','app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FOOTBALL_API_KEY = os.environ.get('FOOTBALL_API_KEY')
+    F1_BASE_URL =  "https://api.jolpi.ca/ergast/f1"
