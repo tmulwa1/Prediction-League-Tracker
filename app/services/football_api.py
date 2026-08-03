@@ -1,7 +1,7 @@
 import requests
 from config import Config
 
-def get_match_result(match_id):
+def get_match_results(match_id):
     url = f"https://api.football-data.org/v4/matches/{match_id}"
     headers = {
         "X-Auth-Token": Config.FOOTBALL_API_KEY
