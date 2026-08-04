@@ -29,3 +29,25 @@ def get_race_results(season, round_number):
     }
 
     return results
+
+def get_upcoming_races(season):
+    url = f"{Config.F1_BASE_URL}/{season}.json"
+    response = requests.get(url)
+    data = response.json()
+
+    races = data["MRData"]["RaceTable"]["Races"]
+    if not races:
+        return None
+
+    # Extracting raceName, date, time and round for each race
+    results = [
+        {
+            'race_name': race["raceName"],
+            'date': race["date"],
+            'time': race["time"] if "time" in race else None,
+            'round': race["round"]
+        }
+        for race in races
+    ]
+
+    return results
