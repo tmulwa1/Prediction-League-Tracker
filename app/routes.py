@@ -75,4 +75,4 @@ def predict(event_id):
         db.session.commit()
         return redirect(url_for('main.index'))
     
-    return render_template('predict.html')
+    return render_template('predict.html', event=event)

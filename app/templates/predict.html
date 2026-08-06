@@ -1,0 +1,27 @@
+{% block title %}Predict{% endblock %}
+{% block content %}
+
+<h1>{{ event.name }}</h1>
+
+<form method="POST" class="predict-form">
+    {% if event.sport == 'F1' %}
+    <label for="predicted_winner">Predicted Winner</label><br>
+    <input tye="text" name="winner" placeholder="Enter the predicted winner">
+    <br>
+
+    <label for="predicted_podium">Predicted Podium</label><br>
+    <input tye="text" name="podium" placeholder="Enter the predicted podium">
+    <br>
+
+{% else %}
+    <label for="predicted_home">Predicted Home Score</label><br>
+    <input tye="number" name="home" placeholder="Enter the predicted home score">
+    <br>
+
+    <label for="predicted_away">Predicted Away Score</label><br>
+    <input tye="number" name="away" placeholder="Enter the predicted away score">
+    <br>
+
+    <button type="submit">Submit</button>
+{% endif %}
+</form>
