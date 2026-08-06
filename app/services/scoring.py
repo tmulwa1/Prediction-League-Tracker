@@ -1,4 +1,8 @@
 def calculate_f1_points(prediction, race_result):
+    if not prediction.predicted_podium:
+        prediction.points_awarded = 0
+        return 0
+    
     # Converting from string into a list and stripping whitespace
     split_podium = [name.strip() for name in prediction.predicted_podium.split(",")]
 
