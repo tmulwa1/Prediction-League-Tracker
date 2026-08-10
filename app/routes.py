@@ -18,7 +18,11 @@ def get_current_user():
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    user = get_current_user()
+    # Query for upcoming events ordered in ascending order, and separated by sport
+    f1_events = Event.query.filter(Event.sport == 'F1', Event.lock_time > datetime.utcnow()).order_by(Event.event_date).all()
+    football_events = Event.query.filter(Event.sport == 'Football', Event.lock_time > datetime.utcnow()).order_by(Event.event_date).all()
+    return render_template('index.html', user=user, f1_events=f1_events, football_events=football_events)
 
 @main.route('/login', methods=['GET','POST'])
 def login():

@@ -2,11 +2,35 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Prediction League Tracker</title>
+        <title>Upcoming Events</title>
     </head>
     
     <body>
-        <h1>Prediction League Tracker</h1>
-        <p>It works.</p>
+        <h1>Upcoming Events</h1>
+
+        {% if user %}
+        <p>Logged in as {{ user.username }}</p>
+        {% else %}
+        <p><a href="{{ url_for('main.login') }}">Log in</a></p>
+        {% endif %}
+
+        <h2>F1 Events</h2>
+
+        {% for event in f1_events %}
+        <details>
+            <summary>{{ event.name }} - {{ event.event_date }}</summary>
+            <p><a href="{{ url_for('main.predict', event_id=event.id) }}">{{ event.name }}</a></p>
+        </details>
+        {% endfor %}
+
+        <h2>Football Events</h2>
+
+        {% for event in football_events %}
+        <details>
+            <summary>{{ event.name }} - {{ event.event_date }}</summary>
+            <p><a href="{{ url_for('main.predict', event_id=event.id) }}">{{ event.name }}</a></p>
+        </details>
+        {% endfor %}
+        
     </body>
 </html>
