@@ -55,3 +55,23 @@ def get_upcoming_matches(competition_code, season):
     ]
 
     return results
+
+def get_current_teams(competition_code):
+    url = f"https://api.football-data.org/v4/competitions/{competition_code}/teams"
+    headers = {
+        "X-Auth-Token": Config.FOOTBALL_API_KEY
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    teams = data["teams"]
+    if not teams:
+        return None
+
+    # Returns a list of current team names
+    results = [
+        team["shortName"]
+        for team in teams
+    ]
+
+    return results
