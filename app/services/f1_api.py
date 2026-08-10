@@ -1,5 +1,6 @@
 import requests
 from config import Config
+
 def get_race_results(season, round_number):
     url = f"{Config.F1_BASE_URL}/{season}/{round_number}/results.json"
     response = requests.get(url)
@@ -51,3 +52,21 @@ def get_upcoming_races(season):
     ]
 
     return results
+
+def get_current_drivers(season):
+    url = f"{Config.F1_BASE_URL}/{season}/drivers.json"
+    response = requests.get(url)
+    data = response.json()
+
+    drivers = data["MRData"]["DriverTable"]["Drivers"]
+    if not drivers:
+        return None
+
+    # Extracting the current drivers in that season in a list
+    results = [
+        driver["familyName"]
+        for driver in drivers
+    ]
+
+    return results
+    

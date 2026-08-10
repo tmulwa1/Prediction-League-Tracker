@@ -1,14 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from app.models import User, Event, Prediction
 from app import db
+from app.services.f1_api import get_current_drivers
 from datetime import datetime
 
 # Blueprint for the main routes of the application
 main = Blueprint('main', __name__)
-
-@main.route('/')
-def index():
-    return render_template('index.html')
 
 def get_current_user():
     # Helper function to get the current user
@@ -18,6 +15,10 @@ def get_current_user():
 
     user = User.query.filter_by(id=user_id).first()
     return user
+
+@main.route('/')
+def index():
+    return render_template('index.html')
 
 @main.route('/login', methods=['GET','POST'])
 def login():
@@ -48,11 +49,19 @@ def predict(event_id):
     if event.lock_time <= datetime.utcnow():
         return "Predictions are closed for this event", 403
 
+    drivers = None
+    if event.sport == 'F1':
+        drivers = get_current_drivers(2026)
+
     if request.method == 'POST':
         # F1 branch
         if event.sport == 'F1':
             predicted_winner = request.form.get('predicted_winner')
-            predicted_podium = request.form.get('predicted_podium')
+            # Podium places have separate dropdowns so have to join them
+            podium_1 = request.form.get('podium_1')
+            podium_2 = request.form.get('podium_2')
+            podium_3 = request.form.get('podium_3')
+            predicted_podium = ",".join([podium_1, podium_2, podium_3])
 
             prediction = Prediction(
                 user_id=user.id,
@@ -75,4 +84,4 @@ def predict(event_id):
         db.session.commit()
         return redirect(url_for('main.index'))
     
-    return render_template('predict.html', event=event)
+    return render_template('predict.html', event=event, drivers=drivers)

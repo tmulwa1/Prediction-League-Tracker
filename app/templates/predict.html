@@ -11,11 +11,35 @@
         <form method="POST" class="predict-form">
             {% if event.sport == 'F1' %}
             <label for="predicted_winner">Predicted Winner</label><br>
-            <input type="text" name="predicted_winner" placeholder="Enter the predicted winner">
+            <select name="predicted_winner">
+                {% for driver in drivers %}
+                <option value="{{ driver }}">{{ driver }}</option>
+                {% endfor %}
+            </select>
             <br><br>
 
-            <label for="predicted_podium">Predicted Podium</label><br>
-            <input type="text" name="predicted_podium" placeholder="Enter the predicted podium">
+            <label>1st Place</label><br>
+            <select name="podium_1">
+                {% for driver in drivers %}
+                <option value="{{ driver }}">{{ driver }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <label>2nd Place</label><br>
+            <select name="podium_2">
+                {% for driver in drivers %}
+                <option value="{{ driver }}">{{ driver }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <label>3rd Place</label><br>
+            <select name="podium_3">
+                {% for driver in drivers %}
+                <option value="{{ driver }}">{{ driver }}</option>
+                {% endfor %}
+            </select>
             <br><br>
 
         {% else %}
