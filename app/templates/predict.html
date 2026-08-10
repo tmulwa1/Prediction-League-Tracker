@@ -7,55 +7,67 @@
     </head>
 
     <body>
-        <h1>{{ event.name }}</h1>
+        <div class="page">
+            <h1>{{ event.name }}</h1>
+            <p class="page-subtitle">{{ event.sport }} - predictions close {{ event.lock_time.strftime('%a %d %b, %H:%M') }}</p>
 
-        <form method="POST" class="predict-form">
+            {% if prediction %}
+            <div class="existing-prediction-note">
+                You've already predicted this event - submitting again will update your prediction
+            </div>
+            {% endif %}
 
-            {% if event.sport == 'F1' %}
-            <label for="predicted_winner">Predicted Winner</label><br>
-            <select name="predicted_winner">
-                {% for driver in drivers %}
-                <option value="{{ driver }}">{{ driver }}</option>
-                {% endfor %}
-            </select>
-            <br><br>
+            <div class="form-card">
+                <form method="POST" class="predict-form">
 
-            <label>1st Place</label><br>
-            <select name="podium_1">
-                {% for driver in drivers %}
-                <option value="{{ driver }}">{{ driver }}</option>
-                {% endfor %}
-            </select>
-            <br>
+                {% if event.sport == 'F1' %}
+                <div class="form-group">
+                    <label for="predicted_winner">Predicted Winner</label><br>
+                    <select name="predicted_winner">
+                        {% for driver in drivers %}
+                        <option value="{{ driver }}" {% if prediction and prediction.predicted_winner == driver %}selected{% endif %}>{{ driver }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <label>2nd Place</label><br>
-            <select name="podium_2">
-                {% for driver in drivers %}
-                <option value="{{ driver }}">{{ driver }}</option>
-                {% endfor %}
-            </select>
-            <br>
+                <div class="form-group">
+                    <label>Predicted Podium</label>
+                    <div class="podium-row">
+                        <select name="podium_1">
+                            {% for driver in drivers %}
+                            <option value="{{ driver }}">{{ driver }}</option>
+                            {% endfor %}
+                        </select>
+        
+                        <select name="podium_2">
+                            {% for driver in drivers %}
+                            <option value="{{ driver }}">{{ driver }}</option>
+                            {% endfor %}
+                        </select>
 
-            <label>3rd Place</label><br>
-            <select name="podium_3">
-                {% for driver in drivers %}
-                <option value="{{ driver }}">{{ driver }}</option>
-                {% endfor %}
-            </select>
-            <br><br>
+                        <select name="podium_3">
+                            {% for driver in drivers %}
+                            <option value="{{ driver }}">{{ driver }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
 
-        {% else %}
-            <label for="predicted_home_score">Predicted Home Score</label><br>
-            <input type="number" name="predicted_home_score" placeholder="Enter the predicted home score" step="1" min="0">
-            <br><br>
+                {% else %}
+                <div class="form-group">
+                    <label for="predicted_home_score">Predicted Home Score</label><br>
+                    <input type="number" name="predicted_home_score" placeholder="Enter the predicted home score" step="1" min="0">
+                </div>
 
-            <label for="predicted_away_score">Predicted Away Score</label><br>
-            <input type="number" name="predicted_away_score" placeholder="Enter the predicted away score" step="1" min="0">
-            <br><br>
+                <div class="form-group">
+                    <label for="predicted_away_score">Predicted Away Score</label><br>
+                    <input type="number" name="predicted_away_score" placeholder="Enter the predicted away score" step="1" min="0">
+                </div>
+                {% endif %}
 
-        {% endif %}
-
-            <button type="submit">Submit</button>
-        </form>
+                    <button type="submit" class="btn-submit">{{ 'Update Prediction' if prediction else 'Submit Prediction' }}</button>
+                </form>
+            </div>
+        </div>
     </body>
 </html>

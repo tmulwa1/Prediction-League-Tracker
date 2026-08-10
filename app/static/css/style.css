@@ -298,11 +298,11 @@ summary:focus-visible {
     gap: 0.6rem;
 }
  
-/* Shows past predictions */
+/* Warning about existing prediction */
 .existing-prediction-note {
     background: var(--bg);
     border: 1px solid var(--divider);
-    border-left: 3px solid var(--football-accent);
+    border-left: 3px solid var(--f1-accent);
     border-radius: 4px;
     padding: 0.7rem 0.9rem;
     font-size: 0.85rem;

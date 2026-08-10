@@ -57,6 +57,10 @@ def predict(event_id):
     if event.sport == 'F1':
         drivers = get_current_drivers(2026)
 
+    # Checks if user has made a prediction for this event before
+    prediction = Prediction.query.filter_by(user_id = user.id, event_id = event.id).first()
+    existing_podium = prediction.predicted_podium.split(",") if prediction and prediction.predicted_podium else []
+
     if request.method == 'POST':
         # F1 branch
         if event.sport == 'F1':
@@ -67,25 +71,38 @@ def predict(event_id):
             podium_3 = request.form.get('podium_3')
             predicted_podium = ",".join([podium_1, podium_2, podium_3])
 
-            prediction = Prediction(
-                user_id=user.id,
-                event_id=event_id,
-                predicted_winner=predicted_winner,
-                predicted_podium=predicted_podium
-            )
-        # Football branch
+            # If a prediction already exists, user can update it
+            if prediction:
+                prediction.predicted_winner = predicted_winner
+                prediction.predicted_podium = predicted_podium
+
+            else:
+            # Otherwise a new prediction is created
+                prediction = Prediction(
+                    user_id=user.id,
+                    event_id=event_id,
+                    predicted_winner=predicted_winner,
+                    predicted_podium=predicted_podium
+                )
+            # Football branch
         else:
             predicted_home_score = int(request.form.get('predicted_home_score'))
             predicted_away_score = int(request.form.get('predicted_away_score'))
 
-            prediction = Prediction(
-                user_id=user.id,
-                event_id=event_id,
-                predicted_home_score=predicted_home_score,
-                predicted_away_score=predicted_away_score
-            )
+            if prediction:
+                prediction.predicted_home_score = predicted_home_score
+                prediction.predicted_away_score = predicted_away_score
+
+            else:
+                prediction = Prediction(
+                    user_id=user.id,
+                    event_id=event_id,
+                    predicted_home_score=predicted_home_score,
+                    predicted_away_score=predicted_away_score
+                )
+
         db.session.add(prediction)
         db.session.commit()
         return redirect(url_for('main.index'))
     
-    return render_template('predict.html', event=event, drivers=drivers)
+    return render_template('predict.html', event=event, drivers=drivers, prediction=prediction, existing_podium=existing_podium)
