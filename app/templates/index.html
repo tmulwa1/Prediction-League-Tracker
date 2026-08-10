@@ -3,34 +3,55 @@
     <head>
         <meta charset="UTF-8">
         <title>Upcoming Events</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     
     <body>
-        <h1>Upcoming Events</h1>
+        <header class="page-header">
+            <h1>Upcoming Events</h1>
 
-        {% if user %}
-        <p>Logged in as {{ user.username }}</p>
-        {% else %}
-        <p><a href="{{ url_for('main.login') }}">Log in</a></p>
-        {% endif %}
+            {% if user %}
+            <p class="user-status">Logged in as <strong>{{ user.username }}</strong></p>
+            {% else %}
+            <p class="user-status"><a href="{{ url_for('main.login') }}">Log in</a></p>
+            {% endif %}
+        </header>
 
-        <h2>F1 Events</h2>
+        <section class="event-section event-section--f1">
+            <h2 class="section-label">F1 Races</h2>
+            <div class="event-list">
+                {% for event in f1_events %}
+                <details class="event-card event-card--f1">
+                    <summary class="event-summary">
+                        <span class="event-name">{{ event.name }}</span>
+                        <span class="event-date">{{ event.event_date.strftime('%a %d %b, %H:%M')  }}</span>
+                    </summary>
+                    <div class="event-details">
+                        <p class="event-sport-tag">{{ event.sport }}</p>
+                        <a class="predict-link" href="{{ url_for('main.predict', event_id=event.id) }}">Make your prediction</a>
+                    </div>
+                </details>
+                {% endfor %}
+            </div>
+        </section>
 
-        {% for event in f1_events %}
-        <details>
-            <summary>{{ event.name }} - {{ event.event_date }}</summary>
-            <p><a href="{{ url_for('main.predict', event_id=event.id) }}">{{ event.name }}</a></p>
-        </details>
-        {% endfor %}
-
-        <h2>Football Events</h2>
-
-        {% for event in football_events %}
-        <details>
-            <summary>{{ event.name }} - {{ event.event_date }}</summary>
-            <p><a href="{{ url_for('main.predict', event_id=event.id) }}">{{ event.name }}</a></p>
-        </details>
-        {% endfor %}
+        <section class="event-section event-section--football">
+            <h2 class="section-label">Football Matches</h2>
+            <div class="event-list">
+                {% for event in football_events %}
+                <details class="event-card event-card--football">
+                    <summary class="event-summary">
+                        <span class="event-name">{{ event.name }}</span>
+                        <span class="event-date">{{ event.event_date.strftime('%a %d %b, %H:%M') }}</span>
+                    </summary>
+                    <div class="event-details">
+                        <p class="event-sport-tag">{{ event.sport }}</p>
+                        <a class="predict-link" href="{{ url_for('main.predict', event_id=event.id) }}">Make your prediction</a>
+                    </div>
+                </details>
+                {% endfor %}
+            </div>
+        </section>
         
     </body>
 </html>

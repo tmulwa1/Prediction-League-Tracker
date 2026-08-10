@@ -70,7 +70,7 @@ def get_current_teams(competition_code):
 
     # Returns a list of current team names
     results = [
-        team["shortName"]
+        team["name"]
         for team in teams
     ]
 

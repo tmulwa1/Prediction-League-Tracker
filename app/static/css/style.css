@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+    --bg: #12161F;
+    --surface: #1B212D;
+    --surface-hover: #232B3A;
+    --text: #EDEFF3;
+    --text-dim: #8B93A3;
+    --f1-accent: #E10600;
+    --football-accent: #00C46A;
+    --divider: #2A3242;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem 1.25rem 4rem;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.page-header {
+    max-width: 720px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--divider);
+    padding-bottom: 1rem;
+}
+
+.page-header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04rem;
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+/*User logged in*/
+.user-status {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.user-status a:hover, .user-status a:focus-visible {
+    color: var(--football-accent);
+}
+
+/* Events */
+.event-section {
+    max-width: 720px;
+    margin: 0 auto 2.5rem;
+}
+
+.section-label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: 0 0 0.75rem;
+    padding-left: 0.9rem;
+    border-left: 3px solid var(--divider);
+}
+
+.event-section--f1 .section-label {
+    border-left-color: var(--f1-accent);
+}
+
+.event-section--football .section-label {
+    border-left-color: var(--football-accent);
+}
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.event-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-left: 3px solid var(--divider);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.event-card--f1 {
+    border-left-color: var(--f1-accent);
+}
+
+.event-card--football {
+    border-left-color: var(--football-accent);
+}
+
+.event-card[open], .event-card:hover {
+    background: var(--surface-hover);
+}
+
+.event-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.event-summary::-webkit-details-marker {
+    display: none;
+}
+
+.event-summary::before {
+    content: '▸';
+    color: var(--text-dim);
+    margin-right: 0.6rem;
+    transition: transform 0.15s ease;
+    display: inline-block;
+}
+
+.event-card[open] .event-summary::before {
+    transform: rotate(90deg);
+}
+
+.event-name {
+    font-weight: 500;
+    font-size: 0.98rem;
+}
+
+.event-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    background: var(--bg);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+ 
+.event-details {
+    padding: 0 1.1rem 1.1rem 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+ 
+.event-sport-tag {
+    margin: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+}
+ 
+.predict-link {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.event-section--f1 .predict-link:hover,
+.event-section--f1 .predict-link:focus-visible {
+    border-color: var(--f1-accent);
+    color: var(--f1-accent);
+}
+ 
+.event-section--football .predict-link:hover,
+.event-section--football .predict-link:focus-visible {
+    border-color: var(--football-accent);
+    color: var(--football-accent);
+}
+ 
+a:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* Page */
+.page {
+    max-width: 480px;
+    margin: 3rem auto;
+    padding: 0 1.25rem;
+}
+
+.page h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+}
+ 
+.page-subtitle {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+/* Forms */
+.form-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    padding: 1.5rem;
+}
+ 
+.form-group {
+    margin-bottom: 1.25rem;
+}
+ 
+.form-group:last-of-type {
+    margin-bottom: 1.5rem;
+}
+ 
+.form-group label {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+}
+
+.form-group input, .form-group select {
+   width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.7rem; 
+}
+
+.form-group input:focus-visible, .form-group select:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 1px;
+}
+
+/* Buttons */
+.btn-submit {
+    width: 100%;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.9rem;
+    color: var(--bg);
+    background: var(--text);
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+ 
+.btn-submit:hover,
+.btn-submit:focus-visible {
+    background: var(--football-accent);
+}
+ 
+.podium-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.6rem;
+}
+ 
+/* Shows past predictions */
+.existing-prediction-note {
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    border-left: 3px solid var(--football-accent);
+    border-radius: 4px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+}
