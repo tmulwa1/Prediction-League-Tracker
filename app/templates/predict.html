@@ -1,27 +1,35 @@
-{% block title %}Predict{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Login Page</title>
+    </head>
 
-<h1>{{ event.name }}</h1>
+    <body>
+        <h1>{{ event.name }}</h1>
 
-<form method="POST" class="predict-form">
-    {% if event.sport == 'F1' %}
-    <label for="predicted_winner">Predicted Winner</label><br>
-    <input tye="text" name="winner" placeholder="Enter the predicted winner">
-    <br>
+        <form method="POST" class="predict-form">
+            {% if event.sport == 'F1' %}
+            <label for="predicted_winner">Predicted Winner</label><br>
+            <input type="text" name="predicted_winner" placeholder="Enter the predicted winner">
+            <br><br>
 
-    <label for="predicted_podium">Predicted Podium</label><br>
-    <input tye="text" name="podium" placeholder="Enter the predicted podium">
-    <br>
+            <label for="predicted_podium">Predicted Podium</label><br>
+            <input type="text" name="predicted_podium" placeholder="Enter the predicted podium">
+            <br><br>
 
-{% else %}
-    <label for="predicted_home">Predicted Home Score</label><br>
-    <input tye="number" name="home" placeholder="Enter the predicted home score">
-    <br>
+        {% else %}
+            <label for="predicted_home_score">Predicted Home Score</label><br>
+            <input type="number" name="predicted_home_score" placeholder="Enter the predicted home score">
+            <br><br>
 
-    <label for="predicted_away">Predicted Away Score</label><br>
-    <input tye="number" name="away" placeholder="Enter the predicted away score">
-    <br>
+            <label for="predicted_away_score">Predicted Away Score</label><br>
+            <input type="number" name="predicted_away_score" placeholder="Enter the predicted away score">
+            <br><br>
 
-    <button type="submit">Submit</button>
-{% endif %}
-</form>
+        {% endif %}
+
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
