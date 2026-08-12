@@ -131,3 +131,18 @@ def predict(event_id):
         return redirect(url_for('main.index'))
     
     return render_template('predict.html', event=event, drivers=drivers, prediction=prediction, existing_podium=existing_podium, home_team=home_team, away_team=away_team)
+
+@main.route('/leaderboard')
+def leaderboard():
+    users = User.query.all()
+    leaderboard_data = []
+
+    for user in users:
+        # Sums up points awarded
+        total_points = sum(p.points_awarded for p in user.predictions)
+        leaderboard_data.append({'username': user.username, 'points': total_points})
+
+    # Sorting leaderboard data by highest points
+    leaderboard_data.sort(key=lambda entry: entry['points'], reverse=True)
+
+    return render_template('leaderboard.html', leaderboard_data=leaderboard_data)

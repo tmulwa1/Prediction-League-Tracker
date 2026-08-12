@@ -408,3 +408,82 @@ summary:focus-visible {
     color: var(--text-dim);
     margin-bottom: 1.5rem;
 }
+
+/* Leaderboard */
+.leaderboard-list {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+ 
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+}
+ 
+.rank-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    background: var(--bg);
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.entry-name {
+    font-weight: 500;
+    flex: 1;
+}
+ 
+.entry-points {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+ 
+/* Top 3 - gold, silver, bronze */
+.leaderboard-row--top1 {
+    border-color: #D4AF37;
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.08), var(--surface) 40%);
+}
+ 
+.leaderboard-row--top2 {
+    border-color: #A8AEB8;
+}
+ 
+.leaderboard-row--top3 {
+    border-color: #C8783C;
+}
+ 
+.rank-badge--top1 {
+    background: #D4AF37;
+    color: #1B1200;
+}
+ 
+.rank-badge--top2 {
+    background: #A8AEB8;
+    color: #1B1200;
+}
+ 
+.rank-badge--top3 {
+    background: #C8783C;
+    color: #1B1200;
+}
+
+.leaderboard-row--top1 .entry-points {
+    color: #D4AF37;
+}
