@@ -75,3 +75,23 @@ def get_current_teams(competition_code):
     ]
 
     return results
+
+def get_team_crests(competition_code):
+    url = f"https://api.football-data.org/v4/competitions/{competition_code}/teams"
+    headers = {
+        "X-Auth-Token": Config.FOOTBALL_API_KEY
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    teams = data["teams"]
+    if not teams:
+        return {}
+
+    # Building dictionary using list comprehension
+    results = {
+        team["name"]: team["crest"]
+        for team in teams
+    }
+
+    return results

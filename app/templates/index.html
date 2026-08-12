@@ -38,15 +38,19 @@
         <section class="event-section event-section--football">
             <h2 class="section-label">Football Matches</h2>
             <div class="event-list">
-                {% for event in football_events %}
+                {% for card in football_cards %}
                 <details class="event-card event-card--football">
                     <summary class="event-summary">
-                        <span class="event-name">{{ event.name }}</span>
-                        <span class="event-date">{{ event.event_date.strftime('%a %d %b, %H:%M') }}</span>
+                        <span class="event-teams">
+                            {% if card.home_crest %}<img class="team-crest" src="{{ card.home_crest }}" alt="">{% endif %}
+                            <span class="event-name">{{ card.event.name }}</span>
+                            {% if card.away_crest %}<img class="team-crest" src="{{ card.away_crest }}" alt="">{% endif %}
+                        </span>
+                        <span class="event-date">{{ card.event.event_date.strftime('%a %d %b, %H:%M') }}</span>
                     </summary>
                     <div class="event-details">
-                        <p class="event-sport-tag">{{ event.sport }}</p>
-                        <a class="predict-link" href="{{ url_for('main.predict', event_id=event.id) }}">Make your prediction</a>
+                        <p class="event-sport-tag">{{ card.event.sport }}</p>
+                        <a class="predict-link" href="{{ url_for('main.predict', event_id=card.event.id) }}">Make your prediction</a>
                     </div>
                 </details>
                 {% endfor %}

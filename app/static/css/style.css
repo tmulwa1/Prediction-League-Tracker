@@ -40,19 +40,26 @@ body {
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.04rem;
+    letter-spacing: 0.04em;
     font-size: 1.75rem;
     margin: 0;
 }
 
-/*User logged in*/
+/* Shows user logged in */
 .user-status {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin: 0;
+}
+
+.user-status a {
     color: var(--text);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-.user-status a:hover, .user-status a:focus-visible {
+.user-status a:hover,
+.user-status a:focus-visible {
     color: var(--football-accent);
 }
 
@@ -105,7 +112,8 @@ body {
     border-left-color: var(--football-accent);
 }
 
-.event-card[open], .event-card:hover {
+.event-card[open],
+.event-card:hover {
     background: var(--surface-hover);
 }
 
@@ -140,6 +148,93 @@ body {
     font-size: 0.98rem;
 }
 
+.event-teams {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.team-crest {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* F1 — a car sweeps across the card on hover */
+.event-card--f1 {
+    position: relative;
+}
+
+.event-card--f1::after {
+    content: '🏎️';
+    position: absolute;
+    top: 50%;
+    left: -2rem;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.event-card--f1:hover::after {
+    animation: race-across 0.9s ease-in-out forwards;
+}
+
+@keyframes race-across {
+    0% {
+        left: -2rem;
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        left: 102%;
+        opacity: 0;
+    }
+}
+
+/* Football — the ball gets a little kick on hover */
+.event-card--football .event-summary::marker,
+.event-card--football .team-crest {
+    transition: transform 0.2s ease;
+}
+
+.event-card--football::before {
+    content: '⚽';
+    position: absolute;
+    top: 50%;
+    right: 0.9rem;
+    transform: translateY(-50%) scale(0.9);
+    font-size: 0.95rem;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.event-card--football {
+    position: relative;
+}
+
+.event-card--football:hover::before {
+    animation: kick 0.5s ease-out forwards;
+}
+
+@keyframes kick {
+    0% {
+        opacity: 1;
+        transform: translateY(-50%) scale(0.9) translateX(0);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1) translateX(-1.4rem) rotate(-100deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.9) translateX(-2.2rem) rotate(-160deg);
+    }
+}
+
 .event-date {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 500;
@@ -151,7 +246,7 @@ body {
     white-space: nowrap;
     letter-spacing: 0.02em;
 }
- 
+
 .event-details {
     padding: 0 1.1rem 1.1rem 2.4rem;
     display: flex;
@@ -160,7 +255,7 @@ body {
     flex-wrap: wrap;
     gap: 0.75rem;
 }
- 
+
 .event-sport-tag {
     margin: 0;
     font-size: 0.75rem;
@@ -168,7 +263,8 @@ body {
     letter-spacing: 0.08em;
     color: var(--text-dim);
 }
- 
+
+/* Predict page */
 .predict-link {
     font-family: 'Oswald', sans-serif;
     font-weight: 500;
@@ -188,22 +284,23 @@ body {
     border-color: var(--f1-accent);
     color: var(--f1-accent);
 }
- 
+
 .event-section--football .predict-link:hover,
 .event-section--football .predict-link:focus-visible {
     border-color: var(--football-accent);
     color: var(--football-accent);
 }
- 
+
 a:focus-visible,
 summary:focus-visible {
     outline: 2px solid var(--text);
     outline-offset: 2px;
 }
- 
+
 @media (prefers-reduced-motion: reduce) {
     * {
         transition: none !important;
+        animation: none !important;
     }
 }
 
@@ -222,7 +319,7 @@ summary:focus-visible {
     font-size: 1.6rem;
     margin-bottom: 0.25rem;
 }
- 
+
 .page-subtitle {
     color: var(--text-dim);
     font-size: 0.9rem;
@@ -236,15 +333,15 @@ summary:focus-visible {
     border-radius: 6px;
     padding: 1.5rem;
 }
- 
+
 .form-group {
     margin-bottom: 1.25rem;
 }
- 
+
 .form-group:last-of-type {
     margin-bottom: 1.5rem;
 }
- 
+
 .form-group label {
     display: block;
     font-size: 0.78rem;
@@ -254,23 +351,25 @@ summary:focus-visible {
     margin-bottom: 0.4rem;
 }
 
-.form-group input, .form-group select {
-   width: 100%;
+.form-group input,
+.form-group select {
+    width: 100%;
     background: var(--bg);
     border: 1px solid var(--divider);
     border-radius: 4px;
     color: var(--text);
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
-    padding: 0.6rem 0.7rem; 
+    padding: 0.6rem 0.7rem;
 }
 
-.form-group input:focus-visible, .form-group select:focus-visible {
+.form-group input:focus-visible,
+.form-group select:focus-visible {
     outline: 2px solid var(--text);
     outline-offset: 1px;
 }
 
-/* Buttons */
+/* Button */
 .btn-submit {
     width: 100%;
     font-family: 'Oswald', sans-serif;
@@ -286,23 +385,23 @@ summary:focus-visible {
     cursor: pointer;
     transition: background-color 0.15s ease;
 }
- 
+
 .btn-submit:hover,
 .btn-submit:focus-visible {
     background: var(--football-accent);
 }
- 
+
 .podium-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0.6rem;
 }
- 
+
 /* Warning about existing prediction */
 .existing-prediction-note {
     background: var(--bg);
     border: 1px solid var(--divider);
-    border-left: 3px solid var(--f1-accent);
+    border-left: 3px solid var(--football-accent);
     border-radius: 4px;
     padding: 0.7rem 0.9rem;
     font-size: 0.85rem;

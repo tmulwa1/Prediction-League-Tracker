@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from app.models import User, Event, Prediction
 from app import db
 from app.services.f1_api import get_current_drivers
+from app.services.football_api import get_team_crests
 from datetime import datetime
 
 # Blueprint for the main routes of the application
@@ -22,7 +23,22 @@ def index():
     # Query for upcoming events ordered in ascending order, and separated by sport
     f1_events = Event.query.filter(Event.sport == 'F1', Event.lock_time > datetime.utcnow()).order_by(Event.event_date).all()
     football_events = Event.query.filter(Event.sport == 'Football', Event.lock_time > datetime.utcnow()).order_by(Event.event_date).all()
-    return render_template('index.html', user=user, f1_events=f1_events, football_events=football_events)
+
+    # Returns empty list if there are no upcoming football events
+    team_crests = get_team_crests("PL") if football_events else {}
+    football_cards = []
+    for event in football_events:
+        parts = event.name.split(" vs ")
+        home_team = parts[0] if len(parts) == 2 else None
+        away_team = parts[1] if len(parts) == 2 else None
+        football_cards.append({
+            'event': event,
+            'home_team': home_team,
+            'away_team': away_team,
+            'home_crest': team_crests.get(home_team),
+            'away_crest': team_crests.get(away_team)
+        })
+    return render_template('index.html', user=user, f1_events=f1_events, football_events=football_events, football_cards=football_cards)
 
 @main.route('/login', methods=['GET','POST'])
 def login():
