@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Leaderboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    
+    <body>
+        <header class="page-header">
+            <h1>Prediction History</h1>
+        </header>
+
+        <div class="prediction-history-list">
+            {% for prediction in predictions %}
+            <div class="prediction-history-row">
+                <p>{{ prediction.event.name }}</p>
+
+                {% if prediction.event.sport == 'F1' %}
+                <p>{{ prediction.predicted_winner }}</p>
+                <p>{{ prediction.predicted_podium }}</p>
+
+                {% if prediction.event.is_finished %}
+                <p>Actual Winner and Podium</p>
+                <p>{{ prediction.event.result.actual_winner }}</p>
+                <p>{{ prediction.event.result.actual_podium }}</p>
+                <p>{{ prediction.points_awarded }}</p>
+                {% else %}
+                <p>Result pending</p>
+                {% endif %}
+
+                {% else %}
+                <p>{{ prediction.predicted_home_score }}</p>
+                <p>{{ prediction.predicted_away_score }}</p>
+
+                {% if prediction.event.is_finished %}
+                <p>Actual Winner and Podium</p>
+                <p>{{ prediction.event.result.actual_home_score }}</p>
+                <p>{{ prediction.event.result.actual_away_score }}</p>
+                <p>{{ prediction.points_awarded }}</p>
+                {% else %}
+                <p>Result pending</p>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

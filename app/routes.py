@@ -146,3 +146,14 @@ def leaderboard():
     leaderboard_data.sort(key=lambda entry: entry['points'], reverse=True)
 
     return render_template('leaderboard.html', leaderboard_data=leaderboard_data)
+
+@main.route('/history')
+def history():
+    user = get_current_user()
+    if not user:
+        return redirect(url_for('main.login'))
+
+    # Sorts events
+    predictions = sorted(user.predictions, key=lambda p: p.event.event_date)
+    
+    return render_template('history.html', predictions=predictions)
