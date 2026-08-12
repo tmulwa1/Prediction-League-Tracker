@@ -487,3 +487,108 @@ summary:focus-visible {
 .leaderboard-row--top1 .entry-points {
     color: #D4AF37;
 }
+
+/* Prediction history */
+.history-list {
+    max-width: 560px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+ 
+.history-card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-left: 3px solid var(--divider);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+    position: relative;
+}
+ 
+.history-card--f1 {
+    border-left-color: var(--f1-accent);
+}
+ 
+.history-card--football {
+    border-left-color: var(--football-accent);
+}
+ 
+.history-card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-right: 4.5rem;
+    margin-bottom: 0.8rem;
+}
+ 
+.history-event-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+ 
+.history-event-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+}
+ 
+.comparison-row {
+    display: flex;
+    gap: 1.5rem;
+    padding-right: 4.5rem;
+}
+ 
+.comparison-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+ 
+.comparison-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+}
+ 
+.comparison-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+ 
+.comparison-sub {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+}
+
+.points-chip,
+.pending-chip {
+    position: absolute;
+    top: 1rem;
+    right: 1.1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+}
+ 
+.points-chip {
+    background: var(--bg);
+    color: var(--football-accent);
+    border: 1px solid var(--football-accent);
+}
+ 
+.pending-chip {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px dashed var(--divider);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.68rem;
+}

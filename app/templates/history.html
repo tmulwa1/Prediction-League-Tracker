@@ -11,36 +11,51 @@
             <h1>Prediction History</h1>
         </header>
 
-        <div class="prediction-history-list">
+        <div class="history-list">
             {% for prediction in predictions %}
-            <div class="prediction-history-row">
-                <p>{{ prediction.event.name }}</p>
+            <div class="history-card {% if prediction.event.sport == 'F1' %}history-card--f1{% else %}history-card--football{% endif %}">
+                <div class="history-card-header">
+                    <span>{{ prediction.event.name }}</span>
+                    <span>{{ prediction.event.event_date.strftime('%a %d %b, %H:%M') }}</span>
+                </div>
 
                 {% if prediction.event.sport == 'F1' %}
-                <p>{{ prediction.predicted_winner }}</p>
-                <p>{{ prediction.predicted_podium }}</p>
+                <div class="comparison-row">
+                    <div class="comparison-col">
+                        <span class="comparison-label">You predicted</span>
+                        <span class="comparison-value">{{ prediction.predicted_winner }}</span>
+                        <span class="comparison-sub">{{ prediction.predicted_podium }}</span>
+                    </div>
 
-                {% if prediction.event.is_finished %}
-                <p>Actual Winner and Podium</p>
-                <p>{{ prediction.event.result.actual_winner }}</p>
-                <p>{{ prediction.event.result.actual_podium }}</p>
-                <p>{{ prediction.points_awarded }}</p>
+                    {% if prediction.event.is_finished %}
+                    <div class="comparison-col">
+                        <span class="comparison-label">Actual</span>
+                        <span class="comparison-value">{{ prediction.event.result.actual_winner }}</span>
+                        <span class="comparison-sub">{{ prediction.event.result.actual_podium }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
                 {% else %}
-                <p>Result pending</p>
+                <div class="comparison-row">
+                    <div class="comparison-col">
+                        <span class="comparison-label">You predicted</span>
+                        <span class="comparison-value">{{ prediction.predicted_home_score }} - {{ prediction.predicted_away_score }}</span>
+                    </div>
+
+                    {% if prediction.event.is_finished %}
+                    <div class="comparison-col">
+                        <span class="comparison-label">Actual</span>
+                        <span class="comparison-value">{{ prediction.event.result.actual_home_score }} - {{ prediction.event.result.actual_away_score }}</span>
+                    </div>
+                    {% endif %}
+                </div>
                 {% endif %}
-
-                {% else %}
-                <p>{{ prediction.predicted_home_score }}</p>
-                <p>{{ prediction.predicted_away_score }}</p>
-
+                   
                 {% if prediction.event.is_finished %}
-                <p>Actual Winner and Podium</p>
-                <p>{{ prediction.event.result.actual_home_score }}</p>
-                <p>{{ prediction.event.result.actual_away_score }}</p>
-                <p>{{ prediction.points_awarded }}</p>
+                <span class="points-chip">{{ prediction.points_awarded }} pts</span>
                 {% else %}
-                <p>Result pending</p>
-                {% endif %}
+                <span class="pending-chip">Pending</span>
                 {% endif %}
             </div>
             {% endfor %}
