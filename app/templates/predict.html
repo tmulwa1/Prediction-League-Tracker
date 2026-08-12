@@ -9,7 +9,7 @@
     <body>
         <div class="page">
             <h1>{{ event.name }}</h1>
-            <p class="page-subtitle">{{ event.sport }} - predictions close {{ event.lock_time.strftime('%a %d %b, %H:%M') }}</p>
+            <p class="page-subtitle">{{ event.sport }} - Predictions close {{ event.lock_time.strftime('%a %d %b, %H:%M') }}</p>
 
             {% if prediction %}
             <div class="existing-prediction-note">
