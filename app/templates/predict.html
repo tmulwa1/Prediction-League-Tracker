@@ -55,12 +55,12 @@
 
                 {% else %}
                 <div class="form-group">
-                    <label for="predicted_home_score">Predicted Home Score</label><br>
+                    <label for="predicted_home_score">Predicted  {{ home_team }} (Home) Score</label>
                     <input type="number" name="predicted_home_score" placeholder="Enter the predicted home score" step="1" min="0">
                 </div>
 
                 <div class="form-group">
-                    <label for="predicted_away_score">Predicted Away Score</label><br>
+                    <label for="predicted_away_score">Predicted {{ away_team }} (Away) Score</label>
                     <input type="number" name="predicted_away_score" placeholder="Enter the predicted away score" step="1" min="0">
                 </div>
                 {% endif %}

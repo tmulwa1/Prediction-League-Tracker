@@ -57,6 +57,15 @@ def predict(event_id):
     if event.sport == 'F1':
         drivers = get_current_drivers(2026)
 
+    home_team = None
+    away_team = None
+    if event.sport == 'Football':
+        # Splitting on the vs to get the two team names
+        parts = event.name.split(" vs ")
+        if len(parts) == 2:
+            home_team = parts[0]
+            away_team = parts[1]
+
     # Checks if user has made a prediction for this event before
     prediction = Prediction.query.filter_by(user_id = user.id, event_id = event.id).first()
     existing_podium = prediction.predicted_podium.split(",") if prediction and prediction.predicted_podium else []
@@ -105,4 +114,4 @@ def predict(event_id):
         db.session.commit()
         return redirect(url_for('main.index'))
     
-    return render_template('predict.html', event=event, drivers=drivers, prediction=prediction, existing_podium=existing_podium)
+    return render_template('predict.html', event=event, drivers=drivers, prediction=prediction, existing_podium=existing_podium, home_team=home_team, away_team=away_team)
