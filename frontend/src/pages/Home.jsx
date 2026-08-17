@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import API from '../api';
 import EventCard from '../components/EventCard';
+import './Home.css';
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -14,41 +16,119 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      // Mock data for now - will connect to real API later
-      setUser({ username: 'TestUser' });
-      setF1Events([
-        { id: 1, name: 'Monaco GP', event_date: '2026-08-20', sport: 'F1', lock_time: '2026-08-20T10:00:00' },
-        { id: 2, name: 'Silverstone GP', event_date: '2026-08-27', sport: 'F1', lock_time: '2026-08-27T10:00:00' }
-      ]);
-      setFootballEvents([
-        { id: 3, name: 'Liverpool vs Arsenal', event_date: '2026-08-21', sport: 'Football', lock_time: '2026-08-21T14:00:00' },
-        { id: 4, name: 'Manchester City vs Chelsea', event_date: '2026-08-22', sport: 'Football', lock_time: '2026-08-22T14:00:00' }
-      ]);
+      // Fetch user info
+      const userRes = await API.get('/user');
+      if (userRes.data.user) {
+        setUser(userRes.data.user);
+      }
+
+      // Fetch events
+      const eventRes = await API.get('/events');
+
+      // Returns empty list if not found
+      setF1Events(eventRes.data.f1_events || []);
+      setFootballEvents(eventRes.data.football_events || []);
       setLoading(false);
-    } catch (error) {
+    } catch(error) {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading events...</p>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Upcoming Events</h1>
-      
-      <h2>Formula 1</h2>
-      <div style={{ display: 'grid', gap: '1rem' }}>
-        {f1Events.map(event => (
-          <EventCard key={event.id} event={event} user={user} />
-        ))}
-      </div>
+    <div className="home-container">
+      <motion.div
+        className="header-section"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="page-title">🏆 Upcoming Events</h1>
+        {user && (
+          <motion.p
+            className="welcome-message"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Welcome back, <strong>{user.username}</strong>! 👏
+          </motion.p>
+        )}
+      </motion.div> 
 
-      <h2>Football</h2>
-      <div style={{ display: 'grid', gap: '1rem' }}>
-        {footballEvents.map(event => (
-          <EventCard key={event.id} event={event} user={user} />
-        ))}
+      <div className="events-grid">
+        {/*F1 section*/}
+        {f1Events.length > 0 && (
+          <motion.section
+            className="sport-section"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="section-header">
+              <h2>🏎️ F1 Races</h2>
+              <span className="event-count">{f1Events.length} races</span>
+            </div>
+
+            <div className="cards-container">
+              <AnimatePresence>
+                {f1Events.map((event, index) => (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="card-wrapper"
+                  >
+                    <EventCard event={event} user={user} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.section>
+        )}
+
+        {/*Football section*/}
+        {footballEvents.length > 0 && (
+          <motion.section
+            className="sport-section"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="section-header">
+              <h2>⚽ Football Matches</h2>
+              <span className="event-count">{footballEvents.length} matches</span>
+            </div>
+
+            <div className="cards-container">
+              <AnimatePresence>
+                {footballEvents.map((event, index) => (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="card-wrapper"
+                  >
+                    <EventCard event={event} user={user} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.section>
+        )}
       </div>
     </div>
   );
