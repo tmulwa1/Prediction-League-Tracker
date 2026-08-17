@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000', // Your Flask backend
-  withCredentials: true, // For session cookies
+  baseURL: 'http://localhost:5000',
+  withCredentials: true,
 });
 
 export default API;
