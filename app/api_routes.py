@@ -5,6 +5,7 @@ from app import db
 from app.services.f1_api import get_current_drivers
 from app.services.football_api import get_team_crests
 from datetime import datetime
+from sqlalchemy import func
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -16,15 +17,14 @@ def get_current_user():
 
 @api.route('/events')
 def get_events():
-    """Get all upcoming events"""
+    # Get upcoming events
+    
     f1_events = Event.query.filter(
-        Event.sport == 'F1', 
-        Event.lock_time > datetime.utcnow()
+        Event.sport == 'F1'
     ).order_by(Event.event_date).all()
     
     football_events = Event.query.filter(
-        Event.sport == 'Football', 
-        Event.lock_time > datetime.utcnow()
+        Event.sport == 'Football'
     ).order_by(Event.event_date).all()
     
     # Convert to JSON
@@ -53,7 +53,7 @@ def get_events():
 
 @api.route('/user')
 def get_user():
-    """Get current user info"""
+    # Get current user info
     user = get_current_user()
     if not user:
         return jsonify({'user': None}), 401
@@ -66,7 +66,7 @@ def get_user():
 
 @api.route('/predictions/<int:event_id>', methods=['GET'])
 def get_prediction(event_id):
-    """Get user's prediction for an event"""
+    # Get user's prediction for an event
     user = get_current_user()
     if not user:
         return jsonify({'error': 'Not logged in'}), 401
@@ -92,7 +92,7 @@ def get_prediction(event_id):
 
 @api.route('/predictions/<int:event_id>', methods=['POST'])
 def save_prediction(event_id):
-    """Save or update a prediction"""
+    # Save or update a prediction
     user = get_current_user()
     if not user:
         return jsonify({'error': 'Not logged in'}), 401
@@ -147,7 +147,7 @@ def save_prediction(event_id):
 
 @api.route('/leaderboard')
 def get_leaderboard():
-    """Get leaderboard data"""
+    # Get leaderboard data
     users = User.query.all()
     leaderboard_data = []
     
@@ -168,7 +168,7 @@ def get_leaderboard():
 
 @api.route('/history')
 def get_history():
-    """Get user's prediction history"""
+    # Get user's prediction history
     user = get_current_user()
     if not user:
         return jsonify({'error': 'Not logged in'}), 401
@@ -191,7 +191,7 @@ def get_history():
 
 @api.route('/event/<int:event_id>')
 def get_event(event_id):
-    """Get event details for prediction page"""
+    # Get event details for prediction page
     event = Event.query.get(event_id)
     if not event:
         return jsonify({'error': 'Event not found'}), 404

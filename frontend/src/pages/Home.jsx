@@ -14,23 +14,29 @@ function Home() {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+    const fetchData = async () => {
     try {
       // Fetch user info
-      const userRes = await API.get('/user');
-      if (userRes.data.user) {
-        setUser(userRes.data.user);
+      try {
+        const userRes = await API.get('/user');
+        if (userRes.data.user) {
+          setUser(userRes.data.user);
+        }
+      } catch (userError) {
+        console.log('User not logged in');
       }
 
-      // Fetch events
       const eventRes = await API.get('/events');
 
       // Returns empty list if not found
       setF1Events(eventRes.data.f1_events || []);
       setFootballEvents(eventRes.data.football_events || []);
+      
+      // Turn off loading
       setLoading(false);
+
     } catch(error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching events:', error);
       setLoading(false);
     }
   };
@@ -44,7 +50,7 @@ function Home() {
     );
   }
 
-  return (
+    return (
     <div className="home-container">
       <motion.div
         className="header-section"
@@ -128,6 +134,14 @@ function Home() {
               </AnimatePresence>
             </div>
           </motion.section>
+        )}
+
+        {/* FALLBACK MESSAGE IF BOTH LISTS ARE EMPTY */}
+        {f1Events.length === 0 && footballEvents.length === 0 && (
+          <div className="empty-state" style={{ textAlign: 'center', marginTop: '3rem', color: '#666' }}>
+            <h3>No upcoming events found</h3>
+            <p>Check back later for new F1 races and football matches!</p>
+          </div>
         )}
       </div>
     </div>
