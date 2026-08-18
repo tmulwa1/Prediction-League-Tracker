@@ -1,0 +1,131 @@
+/*Sidebar*/
+.sidebar {
+  height: 92vh;
+  width: 250px;
+  position: fixed;
+  top: 50%;
+  left: 1.5rem;
+  transform: translateY(-50%);
+  background-color: #1a1a2e;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+  border-radius: 20px;
+  box-shadow: o 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden; 
+}
+
+.sidebar.collapsed {
+  width: 50px;
+  left: 1rem;
+}
+
+.sidebar.collapsed .sidebar-brand span,
+.sidebar.collapsed .sidebar-link .label {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar.collapsed .sidebar-link .icon {
+  margin: 0 auto;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 3rem;
+  white-space: nowrap;
+}
+
+/*Nav links*/
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 8px;
+  color: #b0b3c5;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sidebar-link .icon { 
+  font-size: 1.2rem; 
+  min-width: 24px; 
+  text-align: center; 
+}
+
+.sidebar-link .label { 
+  opacity: 1; 
+  transition: opacity 0.2s; 
+}
+
+/*Toggle button*/
+.toggle-btn {
+  position: absolute;
+  bottom: 5%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2a2a4a;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.toggle-btn:hover { 
+    background: #3a3a5a; 
+}
+
+/*Main content*/
+.main-content {
+  margin-left: 260px;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  box-sizing: border-box; 
+}
+
+.main-content.expanded {
+  margin-left: 70px;
+}
+
+/*Mobile*/
+@media (max-width: 768px) {
+  .sidebar { 
+    transform: translateX(-100%); 
+   }
+  .sidebar.open {
+    transform: translateX(0); 
+   }
+  .main-content, .main-content.expanded {
+    margin-left: 0;
+   }
+}

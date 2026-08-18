@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar'
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Predict from './pages/Predict';
@@ -12,18 +13,24 @@ import History from './pages/History';
 import './App.css'
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // For mobile
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <BrowserRouter>
-      <Navbar user={user} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/predict/:eventId" element={<Predict />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/history" element={<History />} />
-      </Routes>
+      <div style={{ display: 'flex' }}>
+        <Sidebar 
+          isCollapsed={isCollapsed} 
+          setIsCollapsed={setIsCollapsed} 
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
+        <div className={`main-content ${isCollapsed ? 'expanded' : ''}`}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </div>
     </BrowserRouter>
   );
 }
