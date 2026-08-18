@@ -26,6 +26,18 @@ def get_events():
     football_events = Event.query.filter(
         Event.sport == 'Football'
     ).order_by(Event.event_date).all()
+
+    # Get team crests
+    team_names = set()
+    for e in football_events:
+        if ' vs ' in e.name:
+            parts = e.name.split(' vs ')
+            team_names.add(parts[0].strip())
+            team_names.add(parts[1].strip())
+
+    crests = {}
+    if team_names:
+        crests = get_team_crests('PL') 
     
     # Convert to JSON
     f1_data = [{
@@ -37,14 +49,33 @@ def get_events():
         'is_finished': e.is_finished
     } for e in f1_events]
     
-    football_data = [{
-        'id': e.id,
-        'name': e.name,
-        'sport': e.sport,
-        'event_date': e.event_date.isoformat(),
-        'lock_time': e.lock_time.isoformat(),
-        'is_finished': e.is_finished
-    } for e in football_events]
+    football_data = []
+    for e in football_events:
+        home_team = None
+        away_team = None
+        home_logo = None
+        away_logo = None
+        
+        if ' vs ' in e.name:
+            parts = e.name.split(' vs ')
+            home_team = parts[0].strip()
+            away_team = parts[1].strip()
+            # Get the crests from the dictionary
+            home_logo = crests.get(home_team)
+            away_logo = crests.get(away_team)
+
+        football_data.append({
+            'id': e.id,
+            'name': e.name,
+            'sport': e.sport,
+            'event_date': e.event_date.isoformat(),
+            'lock_time': e.lock_time.isoformat(),
+            'is_finished': e.is_finished,
+            'home_team': home_team,
+            'away_team': away_team,
+            'home_logo': home_logo,
+            'away_logo': away_logo
+        })
     
     return jsonify({
         'f1_events': f1_data,
