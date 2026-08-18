@@ -105,7 +105,7 @@
 
 /*Main content*/
 .main-content {
-  margin-left: 260px;
+  margin-left: 90px;
   padding: 2rem;
   transition: margin-left 0.3s ease;
   min-height: 100vh;
@@ -114,7 +114,7 @@
 }
 
 .main-content.expanded {
-  margin-left: 70px;
+  margin-left: 90px;
 }
 
 /*Mobile*/

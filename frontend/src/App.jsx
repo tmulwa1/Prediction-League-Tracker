@@ -28,6 +28,7 @@ function App() {
         <div className={`main-content ${isCollapsed ? 'expanded' : ''}`}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
           </Routes>
         </div>
       </div>
