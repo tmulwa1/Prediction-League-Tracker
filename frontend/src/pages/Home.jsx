@@ -137,7 +137,7 @@ function Home({user, setUser}) {
           </motion.section>
         )}
 
-        {/* FALLBACK MESSAGE IF BOTH LISTS ARE EMPTY */}
+        {/*Returns error message if both lists are empty*/}
         {f1Events.length === 0 && footballEvents.length === 0 && (
           <div className="empty-state" style={{ textAlign: 'center', marginTop: '3rem', color: '#666' }}>
             <h3>No upcoming events found</h3>
