@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api';
 
@@ -6,17 +7,22 @@ function Login({ setUser }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Runs when user clicks login button
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevents automatic page refresh on submission
     try {
+      // Sends data to flask
       const formData = new URLSearchParams();
       formData.append('username', username);
       
+      // Sends a POST request to backend
       const response = await API.post('/login', formData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       
+      // If successful, user is set as current user
       setUser({ username });
+
       navigate('/');
     } catch (error) {
       setError('Login failed. Please try again.');

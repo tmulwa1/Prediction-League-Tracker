@@ -13,6 +13,7 @@ function Leaderboard() {
 
   const fetchLeaderboard = async () => {
     try {
+      // Gets data from flask backend
       const res = await API.get('/leaderboard');
       // Sets leader board otherwise returns empty list
       setLeaderboard(res.data.leaderboard || []);
@@ -50,6 +51,7 @@ function Leaderboard() {
           leaderboard.map((user, index) => (
             <motion.div
               key={user.username}
+              // Dynamically adding CSS classes based on index
               className={`leaderboard-item ${index === 0 ? 'first-place' : ''} ${index === 1 ? 'second-place' : ''} ${index === 2 ? 'third-place' : ''}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

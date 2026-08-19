@@ -4,8 +4,7 @@ import API from '../api';
 import EventCard from '../components/EventCard';
 import './Home.css';
 
-function Home() {
-  const [user, setUser] = useState(null);
+function Home({user, setUser}) {
   const [f1Events, setF1Events] = useState([]);
   const [footballEvents, setFootballEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,15 +14,17 @@ function Home() {
   }, []);
 
     const fetchData = async () => {
-    try {
-      // Fetch user info
-      try {
-        const userRes = await API.get('/user');
-        if (userRes.data.user) {
-          setUser(userRes.data.user);
+    try { 
+      if(!user) {
+        // Fetch user info
+        try {
+          const userRes = await API.get('/user');
+          if (userRes.data.user) {
+            setUser(userRes.data.user);
+          }
+        } catch (userError) {
+          console.log('User not logged in');
         }
-      } catch (userError) {
-        console.log('User not logged in');
       }
 
       const eventRes = await API.get('/events');

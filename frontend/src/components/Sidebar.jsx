@@ -48,6 +48,14 @@ function Sidebar({ isCollapsed, setIsCollapsed, isSidebarOpen, setIsSidebarOpen 
             <span className="icon">👥</span>
             <span className="label">Leagues</span>
           </Link>
+
+          <div className="sidebar-auth" style={{ marginBottom: '1rem' }}>
+            <Link to="/login" className="sidebar-link login-link" onClick={handleLinkClick}>
+              <span className="icon">🔑</span>
+              <span className="label">Login</span>
+            </Link>
+          </div>
+
         </div>
 
         <button className="toggle-btn" onClick={toggleSidebar}>
