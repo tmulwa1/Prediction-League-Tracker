@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api';
+import './Login.css';
+
 
 function Login({ setUser }) {
   const [username, setUsername] = useState('');
@@ -30,47 +32,23 @@ function Login({ setUser }) {
   };
 
   return (
-    <div style={{ 
-      maxWidth: '400px', 
-      margin: '2rem auto', 
-      padding: '2rem',
-      border: '1px solid #ccc',
-      borderRadius: '8px'
-    }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                marginTop: '0.25rem',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
-              }}
-              required
-            />
-          </label>
+    <div className="login-container">
+      <h2>Welcome Back</h2>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            required
+          />
         </div>
-        {error && <div style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
-        <button
-          type="submit"
-          style={{
-            width: '100%',
-            padding: '0.75rem',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}
-        >
+        
+        {error && <div className="error-message">{error}</div>}
+        
+        <button type="submit" className="login-btn">
           Login
         </button>
       </form>
