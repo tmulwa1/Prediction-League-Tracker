@@ -95,6 +95,7 @@ body, html {
     transform: translate(-50%, -50%);
     z-index: 5;
     width: auto;
+    max-width: none;
     text-align: center;
     display: flex;
     flex-direction: column; 

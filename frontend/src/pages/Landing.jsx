@@ -52,6 +52,7 @@ function Landing() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         transition={{ duration: 0.8 }}
+                        style={{ width: 'auto' }}
                     >
                         <div className="hero-subtitle">The Premier Racing</div>
                         <div className="hero-title">BOOST</div>
@@ -69,6 +70,7 @@ function Landing() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         transition={{ duration: 0.8 }}
+                        style={{ width: 'auto' }}
                     >
                         <div className="hero-subtitle">The Ultimate League</div>
                         <div className="hero-title">SCORE</div>
