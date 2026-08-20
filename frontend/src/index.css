@@ -60,11 +60,19 @@ body {
   margin: 0;
   text-align: center;
   border: none;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   background-color: #f8f9fa; /* Matches your Home.css */
+  overflow: hidden;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f8f9fa;
 }
 
 h1,

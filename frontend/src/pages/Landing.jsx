@@ -38,7 +38,7 @@ function Landing() {
             {/*Navbar*/}
             <div className="landing-nav">
                 <div className="landing-logo">🏆 PREDICTION LEAGUE</div>
-                <button className="landing-logo-btn" onClick={() => navigate('/login')}>
+                <button className="landing-login-btn" onClick={() => navigate('/login')}>
                     SIGN IN
                 </button>
             </div>
