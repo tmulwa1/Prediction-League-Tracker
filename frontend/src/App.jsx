@@ -41,7 +41,8 @@ function App() {
         <div className={`main-content ${isCollapsed ? 'expanded' : ''}`}>
           {/*Shows this component when user visits URL*/}
           <Routes>
-            <Route path="/" element={<Home user={user} setUser={setUser} />} />
+            
+            <Route path="/home" element={<Home user={user} setUser={setUser} />} />
             <Route path="/leaderboard" element={<Leaderboard user={user} setUser={setUser}/>} />
             <Route path="/login" element={<Login setUser={setUser} />} />
           </Routes>

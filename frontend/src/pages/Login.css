@@ -1,34 +1,55 @@
-/*Base*/
-.login-split-layout {
-    display: flex;
-    min-height: 100vh;
+/*Wrappers*/
+.track-svg-wrapper, .goal-svg-wrapper {
     width: 100%;
-    background-color: #f8f9fa;
-}
-
-/*Left side*/
-.login-hero {
-    flex: 1;
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
+    max-width: 500px;
+    height: 80px;
     position: relative;
     overflow: hidden;
-    color: white;
-    gap: 1.5rem;
+    border-radius: 12px;
 }
 
-/*Animations*/
-.hero-section {
-    width: 80%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+/*F1 SVG animations*/
+.moving-f1-svg {
+    transform: translateX(-220px);
+    animation: drive-track-svg 4s linear infinite;
+}
+
+@keyframes drive-track-svg {
+    0% {
+        transform: translateX(-220px);
+    }
+
+    100% {
+        transform: translateX(500px);
+    }
+}
+
+/*Football SVG section*/
+.moving-ball-svg {
+    transform: translate(0, 0);
+    animation: shoot-goal-svg 3.5s ease-in-out infinite;
+}
+
+@keyframes shoot-goal-svg {
+    0% {
+        transform: translate(0px, 0px) rotate(0deg);
+    }
+
+    30% {
+        transform: translate(140px, -30px) rotate(180deg);
+    }
+
+    60% {
+        transform: translate(300px, -10px) rotate(360deg);
+    }
+
+    85% {
+        transform: translate(380px, -5px) rotate(400deg);
+    }
+
+    100% {
+        transform: translate(420px, 450px) rotate(450deg);
+    }
 }
 
 .section-label {
@@ -37,135 +58,6 @@
     letter-spacing: 1px;
     font-weight: 600;
     text-transform: uppercase;
-}
-
-/*F1 animation*/
-.track-container {
-    width: 100%;
-    height: 60px;
-    background: #334155;
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
-    border: 2px solid #475569;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
-.track-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: #f1f5f9;
-    transform: translateY(-50%); 
-}
-
-.track-line.dashed {
-    top: 25%;
-    height: 1px;
-    background: transparent;
-    background-image: linear-gradient(to right, #94a3b8 50%, transparent 50%);
-    background-size: 20px 100%;
-}
-
-.moving-f1 {
-    position: absolute;
-    font-size: 2.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: drive-track 3.5s linear infinite;
-}
-
-@keyframes drive-track {
-    0% {
-        left: -60px;
-    }
-
-    100% {
-        left: calc(100% + 60px);
-    }
-}
-
-/*Football section*/
-.goal-container {
-    width: 100%;
-    height: 80px;
-    position: relative;
-}
-
-.goal-post-left, .goal-post-right {
-    position: absolute;
-    bottom: 0;
-    width: 4px;
-    height: 60px;
-    background: #f1f5f9;
-    border-radius: 2px;
-}
-
-.goal-post-left {
-    left: 20%;
-}
-
-.goal-post-right {
-    right: 20%;
-}
-
-.goal-crossbar {
-    position: absolute;
-    top: 20px;
-    left: 20%;
-    right: 20%;
-    height: 4px;
-    background: #f1f5f9;
-    border-radius: 2px;
-}
-
-.goal-net {
-    position: absolute;
-    top: 24px;
-    left: calc(20% + 5px);
-    right: calc(20% + 5px);
-    bottom: 4px;
-    background: repeating-linear-gradient(
-        45deg,
-        transparent, 
-        transparent 10px,
-        rgba(255, 255, 255, 0.05) 10px,
-        rgba(255, 255, 255, 0.05) 11px
-    );
-    border-radius: 0 0 50% 50% / 0 0 100% 100%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.moving-ball {
-    position: absolute;
-    font-size: 2.5rem;
-    bottom: 0px;
-    animation: shoot-goal 3s ease-in-out infinite;
-}
-
-@keyframes shoot-goal {
-    0% {
-        left: 5%;
-        bottom: 5px;
-        transform: rotate(0deg);
-    }
-    40% {
-        left: 40%;
-        bottom: 60px;
-        transform: rotate(180deg);
-    }
-    70% {
-        left: 90%;
-        bottom: 5px;
-        transform: rotate(270deg);
-    }
-    100% {
-        left: 90%;
-        bottom: 5px;
-        transform: rotate(360deg);
-    }
 }
 
 /*Text*/
@@ -277,29 +169,7 @@
 
 /*Responsive layout*/
 @media (max-width: 768px) {
-    .login-split-layout {
-        flex-direction: column;
-    }
-
-    .login-hero {
-        min-height: 350px;
-        padding: 1.5rem;
-        gap: 1rem;
-    }
-
-    .hero-text h1 {
-        font-size: 2.2rem;
-    }
-
-    .hero-section {
-        width: 90%;
-    }
-
-    .login-form-wrapper {
-        padding: 1.5rem;
-    }
-
-    .login-card {
-        padding: 2rem;
+    .track-svg-wrapper, .goal-svg-wrapper {
+        height: 60px;
     }
 }
