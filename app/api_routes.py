@@ -252,3 +252,41 @@ def get_event(event_id):
         'home_team': home_team,
         'away_team': away_team
     })
+
+@api.route('/login', methods=['POST'])
+def api_login():
+    # Get the JSON data sent from React
+    data = request.get_json()
+    
+    # FIX: Use standard dictionary .get() instead of .form.get()
+    username = data.get('username') if data else None
+    password = data.get('password') if data else None
+
+    if not username or not password:
+        return jsonify({'error': 'Username and password are required'}), 400
+
+    # Find the user in the database
+    user = User.query.filter_by(username=username).first()
+    
+    # If user doesn't exist, create a new one with the password
+    if not user:
+        user = User(username=username)
+        user.set_password(password) 
+        db.session.add(user)
+        db.session.commit()
+        session['user_id'] = user.id
+        return jsonify({
+            'success': True,
+            'user': {'id': user.id, 'username': user.username}
+        })
+
+    # If user exists, check if the password matches the hashed one in the DB
+    if user.check_password(password):
+        session['user_id'] = user.id
+        return jsonify({
+            'success': True,
+            'user': {'id': user.id, 'username': user.username}
+        })
+    
+    # If password is wrong
+    return jsonify({'error': 'Invalid password'}), 401

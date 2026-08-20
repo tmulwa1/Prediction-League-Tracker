@@ -45,7 +45,7 @@ function App() {
             {/*Shows this component when user visits URL*/}
             <Routes>
               <Route path="/" element={<Landing />} /> 
-              <Route path="/home" element={<Home user={user} setUser={setUser} />} />
+              <Route path="/dashboard" element={<Home user={user} setUser={setUser} />} />
               <Route path="/leaderboard" element={<Leaderboard user={user} setUser={setUser}/>} />
               <Route path="/login" element={<Login setUser={setUser} />} />
               <Route path="/predict/:eventId" element={<Predict />} />
