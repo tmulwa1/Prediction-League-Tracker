@@ -59,17 +59,19 @@ function Home({user, setUser}) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="page-title">🏆 Upcoming Events</h1>
-        {user && (
-          <motion.p
-            className="welcome-message"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            Welcome back, <strong>{user.username}</strong>! 👏
-          </motion.p>
-        )}
+        <div className="title-wrapper">
+          <h1 className="page-title">🏆 Upcoming Events</h1>
+          {user && (
+            <motion.p
+              className="welcome-message"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              Welcome back, <strong>{user.username}</strong>! 👏
+            </motion.p>
+          )}
+        </div>
       </motion.div> 
 
       <div className="events-grid">
