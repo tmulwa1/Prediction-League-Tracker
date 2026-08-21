@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), index=True, unique=True, nullable=False)
-    password = db.Column(db.String(128))
+    password_hash = db.Column(db.String(128))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     # SQLAlchemy loads related objects on-access
     predictions = db.relationship('Prediction', backref='user', lazy=True)
