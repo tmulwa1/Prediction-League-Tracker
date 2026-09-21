@@ -32,7 +32,7 @@ function Sidebar({ isCollapsed, setIsCollapsed, isSidebarOpen, setIsSidebarOpen 
         </Link>
 
         <div className="sidebar-nav">
-          <Link to="/" className={`sidebar-link ${location.pathname === '/' ? 'active' : ''}`} onClick={handleLinkClick}>
+          <Link to="/dashboard" className={`sidebar-link ${location.pathname === '/' ? 'active' : ''}`} onClick={handleLinkClick}>
             <span className="icon">🏠</span>
             <span className="label">Home</span>
           </Link>

@@ -13,13 +13,15 @@
   transition: width 0.3s ease, transform 0.3s ease;
   z-index: 1000;
   border-radius: 20px;
-  box-shadow: o 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   overflow: hidden; 
 }
 
 .sidebar.collapsed {
   width: 50px;
   left: 1rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .sidebar.collapsed .sidebar-brand span,
@@ -29,7 +31,17 @@
 }
 
 .sidebar.collapsed .sidebar-link .icon {
-  margin: 0 auto;
+  margin: 0;
+}
+
+.sidebar.collapsed .sidebar-link .icon{
+  padding: 0.25rem 0;
+  justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-brand {
+  justify-content: center;
+  padding: 0;
 }
 
 .sidebar-brand {

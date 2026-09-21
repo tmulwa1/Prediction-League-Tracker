@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import API from '../api';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
+import './Predict.css';
 
 function Predict() {
-  // Getting the id from the URL
   const { eventId } = useParams();
   const navigate = useNavigate();
 
@@ -14,8 +14,14 @@ function Predict() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
+  // State for F1
+  const [drivers, setDrivers] = useState([]);
   const [predictedWinner, setPredictedWinner] = useState('');
-  const [predictedPodium, setPredictedPodium] = useState('');
+  const [podium1, setPodium1] = useState('');
+  const [podium2, setPodium2] = useState('');
+  const [podium3, setPodium3] = useState('');
+
+  // State for Football
   const [predictedHome, setPredictedHome] = useState('');
   const [predictedAway, setPredictedAway] = useState('');
 
@@ -24,32 +30,38 @@ function Predict() {
       try {
         const eventRes = await API.get(`/event/${eventId}`);
         setEvent(eventRes.data.event);
-
+        setDrivers(eventRes.data.drivers || []); // <--- THIS FILLS THE DROPDOWN
+        
         try {
           const predRes = await API.get(`/predictions/${eventId}`);
-          const pred = predRes.data.predidction;
-
+          const pred = predRes.data.prediction;
+          
           if (pred) {
             setExistingPrediction(pred);
-
-            // Pre-fills form if prediction already exists
+            
             if (eventRes.data.event.sport === 'F1') {
               setPredictedWinner(pred.predicted_winner || '');
-              setPredictedPodium(Array.isArray(pred.predicted_podium) ? pred.predicted_podium.join(',') : pred.predicted_podium || '');
+              const podium = pred.predicted_podium || [];
+              setPodium1(podium[0] || '');
+              setPodium2(podium[1] || '');
+              setPodium3(podium[2] || '');
             } else {
               setPredictedHome(pred.predicted_home_score || '');
               setPredictedAway(pred.predicted_away_score || '');
             }
-          } 
-        } catch (error) {
-          setError('No prior predictions found');
-        }  
-      } catch (error) {
-        setError('Failed to load event details');
+          }
+        } catch (err) {
+          console.log('No prior prediction found');
+        }
+
+      } catch (err) {
+        console.error('Error loading prediction page:', err);
+        setError('Failed to load event details.');
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, [eventId]);
 
@@ -63,38 +75,30 @@ function Predict() {
 
       if (event.sport === 'F1') {
         payload.predicted_winner = predictedWinner;
-        // Converts string back into array
-        payload.predicted_podium = predictedPodium ? predictedPodium.split(',').map(s => s.trim()) : [];
+        payload.predicted_podium = [podium1, podium2, podium3].filter(Boolean);
       } else {
         payload.predicted_home_score = parseInt(predictedHome);
         payload.predicted_away_score = parseInt(predictedAway);
       }
 
       await API.post(`/predictions/${eventId}`, payload);
-      navigate('/');
-    } catch (error) {
-      setError('Failed to save prediction. Please try again');
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Error saving prediction:', err);
+      setError('Failed to save prediction. Please try again.');
       setSubmitting(false);
     }
   };
 
-  if (loading) return (
-    <div className="loading-container">
-      Loading prediction form...
-    </div>
-  )
+  if (loading) {
+    return (
+      <div className="loading-container" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p>Loading prediction form...</p>
+      </div>
+    );
+  }
 
-  if (error) return (
-    <div style={{ textAlign: 'center', padding: '3rem', color: '#dc3545' }}>
-      <h2>OOPS!</h2>
-      <p>{error}</p>
-      <button className="btn btn-secondary" onClick={() => navigate('/')}>Go Back</button>
-    </div>
-  );
-
-  if (!event) return (
-    <div style={{ textAlign: 'center', padding: '3rem' }}>Event not found</div>
-  )
+  if (!event) return <div>Event not found</div>;
 
   return (
     <motion.div 
@@ -103,68 +107,130 @@ function Predict() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="predict-title">{event.name}</h1>
-      
-      <form onSubmit={handleSubmit} className="predict-form">
-        
-        {/* F1 Form */}
-        {event.sport === 'F1' && (
-          <div className="form-group">
-            <label>Predicted Winner</label>
-            <select 
-              value={predictedWinner} 
-              onChange={(e) => setPredictedWinner(e.target.value)}
-              required
-              style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '18px solid #ccc'}}
-            >
-              <option value="">Select a driver...</option>
-              {/*Mapping over drivers*/}
-              {event.drivers && event.drivers.map((driver) => (
-                <option key={driver} value={driver}>{driver}</option>
-              ))}
-            </select>
-          </div>
-        )}
+      {/* Header */}
+      <div className="predict-header">
+        <h1 className="predict-title">{event.name}</h1>
+        <p className="predict-subtitle">
+          {event.sport} - Predictions close {new Date(event.lock_time).toLocaleString()}
+        </p>
+      </div>
 
-        {/* Football Form */}
-        {event.sport === 'Football' && (
-          <div className="football-scores" style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'center'}}>
-            <div className="form-group" style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontWeight: '600', marginBottom: '0.5rem', textAlign: 'center' }}>{event.home_team}</label>
-              <input 
-                type="number" 
-                min="0"
-                value={predictedHome} 
-                onChange={(e) => setPredictedHome(e.target.value)}
-                required
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ccc', textAlign: 'center', fontSize: '1.2rem' }}
-              />
-            </div>
-            <span className="vs-text" style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#666' }}>VS</span>
-            <div className="form-group" style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontWeight: '600', marginBottom: '0.5rem', textAlign: 'center' }}>{event.away_team}</label>
-              <input 
-                type="number" 
-                min="0"
-                value={predictedAway} 
-                onChange={(e) => setPredictedAway(e.target.value)}
-                required
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ccc', textAlign: 'center', fontSize: '1.2rem' }}
-              />
-            </div>
-          </div>
-        )}
+      {existingPrediction && (
+        <div className="existing-prediction-notice">
+          You've already predicted this event - submitting again will update your prediction
+        </div>
+      )}
 
-        <div className="form-actions" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-          <button type="button" className="btn btn-secondary" onClick={() => navigate('/')} style={{ flex: 1 }}>
-            Cancel
-          </button>
-          <button type="submit" className="btn btn-primary" disabled={submitting} style={{ flex: 1 }}>
+      {/* Form Card */}
+      <div className="predict-card">
+        <form onSubmit={handleSubmit} className="predict-form">
+          {error && <div className="error-message">{error}</div>}
+
+          {/* F1 Branch */}
+          {event.sport === 'F1' && (
+            <>
+              <div className="form-group">
+                <label className="form-label">Predicted Winner</label>
+                <select 
+                  className="form-select"
+                  value={predictedWinner} 
+                  onChange={(e) => setPredictedWinner(e.target.value)}
+                  required
+                >
+                  <option value="">Select a driver...</option>
+                  {drivers.length > 0 ? (
+                    drivers.map((driver) => (
+                      <option key={driver} value={driver}>{driver}</option>
+                    ))
+                  ) : (
+                    <option value="" disabled>No drivers available</option>
+                  )}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Predicted Podium</label>
+                <div className="podium-container">
+                  <div className="podium-item">
+                    <label className="form-label">P1</label>
+                    <select 
+                      className="form-select"
+                      value={podium1} 
+                      onChange={(e) => setPodium1(e.target.value)}
+                    >
+                      <option value="">Select...</option>
+                      {drivers.map((driver) => (
+                        <option key={driver} value={driver}>{driver}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="podium-item">
+                    <label className="form-label">P2</label>
+                    <select 
+                      className="form-select"
+                      value={podium2} 
+                      onChange={(e) => setPodium2(e.target.value)}
+                    >
+                      <option value="">Select...</option>
+                      {drivers.map((driver) => (
+                        <option key={driver} value={driver}>{driver}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="podium-item">
+                    <label className="form-label">P3</label>
+                    <select 
+                      className="form-select"
+                      value={podium3} 
+                      onChange={(e) => setPodium3(e.target.value)}
+                    >
+                      <option value="">Select...</option>
+                      {drivers.map((driver) => (
+                        <option key={driver} value={driver}>{driver}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Football Branch */}
+          {event.sport === 'Football' && (
+            <div className="scores-container">
+              <div className="form-group">
+                <label className="form-label">Predicted {event.home_team} (Home) Score</label>
+                <input 
+                  className="form-input"
+                  type="number" 
+                  min="0"
+                  value={predictedHome} 
+                  onChange={(e) => setPredictedHome(e.target.value)}
+                  placeholder="Enter home score"
+                  required
+                />
+              </div>
+              <div className="vs-text">VS</div>
+              <div className="form-group">
+                <label className="form-label">Predicted {event.away_team} (Away) Score</label>
+                <input 
+                  className="form-input"
+                  type="number" 
+                  min="0"
+                  value={predictedAway} 
+                  onChange={(e) => setPredictedAway(e.target.value)}
+                  placeholder="Enter away score"
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          <button type="submit" className="submit-btn" disabled={submitting}>
             {submitting ? 'Saving...' : existingPrediction ? 'Update Prediction' : 'Submit Prediction'}
           </button>
-        </div>
-
-      </form>
+        </form>
+      </div>
     </motion.div>
   );
 }
