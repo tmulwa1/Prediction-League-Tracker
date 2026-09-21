@@ -290,3 +290,71 @@ def api_login():
     
     # If password is wrong
     return jsonify({'error': 'Invalid password'}), 401
+
+@api.route('/results/<int:event_id>', methods=['POST'])
+def save_result(event_id):
+    # Saves the result of an event and awards points
+    from app.services.scoring import calculate_f1_points, calculate_football_points
+
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({'error': 'Event not found'}), 404
+
+    data = request.get_json()
+    # Checks if result already exists
+    result = Result.query.filter_by(event_id=event_id).first()
+
+    if event.sport == 'F1':
+        podium = data.get('podium', [])
+        winner = data.get('winner') or (podium[0] if podium else None)
+
+        if not winner or not podium:
+            return jsonify({'error': 'Winner and podium are required'}), 400
+
+        if result:
+            # If result exists, updates values
+            result.actual_winner = winner
+            result.actual_podium = ','.join(podium)
+        else:
+            result = Result(
+                event_id=event_id,
+                actual_winner=winner,
+                actual_podium=','.join(podium)
+            )
+
+        result_dict = {'winner': winner, 'podium': podium}
+
+        # Awarding points
+        for prediction in event.predictions:
+            calculate_f1_points(prediction, result_dict)
+
+    else: 
+        # Football
+        home_score = data.get('home_score')
+        away_score = data.get('away_score')
+
+        if home_score is None or away_score is None:
+            return jsonify({'error': 'Home and away scores are required'}), 400
+
+        if result:
+            result.actual_home_score = home_score
+            result.actual_away_score = away_score
+        else:
+            result = Result(
+                event_id=event_id,
+                actual_home_score=home_score,
+                actual_away_score=away_score
+            )
+
+        result_dict = {'home_score': home_score, 'away_score': away_score}
+
+        # Awarding points
+        for prediction in event.predictions:
+            calculate_football_points(prediction, result_dict)
+
+    # Mark event as finished
+    event.is_finished = True
+    db.session.add(result)
+    db.session.commit()
+
+    return jsonify({'success': True, 'message': 'Result saved and points awarded', 'result_id': result.id})
