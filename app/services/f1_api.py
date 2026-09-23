@@ -54,19 +54,32 @@ def get_upcoming_races(season):
     return results
 
 def get_current_drivers(season):
-    url = f"{Config.F1_BASE_URL}/{season}/drivers.json"
-    response = requests.get(url)
-    data = response.json()
-
-    drivers = data["MRData"]["DriverTable"]["Drivers"]
-    if not drivers:
-        return None
-
-    # Extracting the current drivers in that season in a list
-    results = [
-        driver["familyName"]
-        for driver in drivers
+    # Fallback list of drivers we know should be in F1
+    FALLBACK_DRIVERS = [
+        "Verstappen", "Tsunoda", "Norris", "Piastri", "Leclerc", "Hamilton",
+        "Russell", "Antonelli", "Alonso", "Stroll", "Gasly", "Doohan",
+        "Albon", "Sainz", "Hulkenberg", "Bortoleto", "Ocon", "Bearman",
+        "Lawson", "Hadjar"
     ]
+    try:
+        url = f"{Config.F1_BASE_URL}/{season}/drivers.json"
+        response = requests.get(url)
+        data = response.json()
 
-    return results
-    
+        drivers = data["MRData"]["DriverTable"]["Drivers"]
+        
+        # If API fails or returns too few, merge with fallback
+        if not drivers or len(drivers) < 15:
+            print(f"F1 API returned only {len(drivers) if drivers else 0} drivers. Using fallback.")
+            return sorted(FALLBACK_DRIVERS)
+        
+        # Extract family names from API
+        api_drivers = [driver["familyName"] for driver in drivers]
+        
+        # Merge API + fallback (set removes duplicates), then sort alphabetically
+        all_drivers = sorted(set(api_drivers + FALLBACK_DRIVERS))
+        return all_drivers
+    except Exception as e:
+        print(f"Error fetching F1 drivers: {e}. Using fallback list.")
+        return sorted(FALLBACK_DRIVERS)
+        

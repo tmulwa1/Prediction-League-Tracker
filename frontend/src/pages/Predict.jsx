@@ -199,7 +199,9 @@ function Predict() {
           {event.sport === 'Football' && (
             <div className="scores-container">
               <div className="form-group">
-                <label className="form-label">Predicted {event.home_team} (Home) Score</label>
+                <label className="form-label">
+                  Predicted {event.home_team} (Home) Score
+                </label>
                 <input 
                   className="form-input"
                   type="number" 
@@ -212,7 +214,9 @@ function Predict() {
               </div>
               <div className="vs-text">VS</div>
               <div className="form-group">
-                <label className="form-label">Predicted {event.away_team} (Away) Score</label>
+                <label className="form-label">
+                  Predicted {event.away_team} (Away) Score
+                </label>
                 <input 
                   className="form-input"
                   type="number" 
