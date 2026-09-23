@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Predict from './pages/Predict';
 import Leaderboard from './pages/Leaderboard';
+import History from './pages/History';
 
 function ProtectedRoute({ user, children }) {
   if (!user) {
@@ -67,6 +68,11 @@ function App() {
               <Route path="/predict/:eventId" element={
                 <ProtectedRoute user={user}>
                   <Predict />
+                </ProtectedRoute>
+              } />
+              <Route path="/history" element={
+                <ProtectedRoute user={user}>
+                  <History />
                 </ProtectedRoute>
               } />
               {/* If user isn't logged in and tries to access dashboard, they get redirected */}
